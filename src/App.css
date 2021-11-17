@@ -32,3 +32,17 @@
   max-width: 450px;
   text-align: justify;
 }
+.important::before{
+  color: red;
+  content: "*";
+  padding: 5px;
+}
+.buttonPosition {
+  position: relative;
+  left: 15px;
+}
+.formBottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

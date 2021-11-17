@@ -30,7 +30,6 @@ function loginReducer(state, action) {
   } if (action.type === ERROR_LOGIN) {
     return { ...defaultState, error: action.payload };
   } if (action.type === OUT_LOGIN) {
-    localStorage.removeItem('practice4');
     return defaultState;
   }
   return state;
