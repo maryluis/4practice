@@ -21,7 +21,7 @@ function LoginPage() {
   }, [login, password]);
   return (
     <Card className="p-5">
-      <CardTitle tag="h4">Sign in to continue</CardTitle>
+      <CardTitle className="center" tag="h4">Sign in to continue</CardTitle>
       <Form>
         <FormGroup className="m-3" row>
           <Label sm={2} for="login">Login</Label>
@@ -47,7 +47,9 @@ function LoginPage() {
             />
           </Col>
         </FormGroup>
-        <Button color="secondary" onClick={handleSubmit}>Send</Button>
+        <FormGroup className="center">
+          <Button color="secondary" onClick={handleSubmit}>Send</Button>
+        </FormGroup>
       </Form>
     </Card>
   );

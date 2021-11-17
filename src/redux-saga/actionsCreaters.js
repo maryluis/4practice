@@ -1,4 +1,6 @@
-import { ERROR_LOGIN, PUT_LOGIN, SEND_LOGIN } from './actions';
+import {
+  ERROR_LOGIN, OUT_LOGIN, PUT_LOGIN, SEND_LOGIN,
+} from './actions';
 
 export const actionSendLogin = (payload) => ({
   type: SEND_LOGIN,
@@ -13,4 +15,7 @@ export const actionPutLogin = (payload) => ({
 export const actionLoginError = (payload) => ({
   type: ERROR_LOGIN,
   payload,
+});
+export const actionOutLogin = () => ({
+  type: OUT_LOGIN,
 });

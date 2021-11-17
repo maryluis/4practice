@@ -1,12 +1,17 @@
 import './App.css';
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 import { store } from './redux-saga';
-import { LoginPage } from './components';
+import { Header, Main } from './components';
 
 function App() {
   return (
     <Provider store={store}>
-      <LoginPage />
+      <Router history={createBrowserHistory}>
+        <Header />
+        <Main />
+      </Router>
     </Provider>
   );
 }

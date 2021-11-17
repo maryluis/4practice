@@ -1,4 +1,6 @@
-import { ERROR_LOGIN, PUT_LOGIN, SEND_LOGIN } from './actions';
+import {
+  ERROR_LOGIN, OUT_LOGIN, PUT_LOGIN, SEND_LOGIN,
+} from './actions';
 
 const defaultState = {
   loginData: null,
@@ -10,10 +12,14 @@ const defaultState = {
 
 function loginReducer(state, action) {
   if (state === undefined) {
+    if (localStorage.practice4) {
+      return JSON.parse(localStorage.practice4);
+    }
     return defaultState;
   } if (action.type === SEND_LOGIN) {
     return { ...state, isLoading: true };
   } if (action.type === PUT_LOGIN) {
+    localStorage.practice4 = JSON.stringify(action.payload);
     return {
       loginData: action.payload,
       isLogin: true,
@@ -23,6 +29,9 @@ function loginReducer(state, action) {
     };
   } if (action.type === ERROR_LOGIN) {
     return { ...defaultState, error: action.payload };
+  } if (action.type === OUT_LOGIN) {
+    localStorage.removeItem('practice4');
+    return defaultState;
   }
   return state;
 }
