@@ -5,3 +5,5 @@ export const OUT_LOGIN = 'OUT_LOGIN';
 export const GET_ORDERS = 'GET_ORDERS';
 export const PUT_ORDERS = 'PUT_ORDERS';
 export const ERROR_ORDERS = 'ERROR_ORDERS';
+export const SEND_DATA_EDIT = 'SEND_DATA_EDIT';
+export const SEND_DATA_EDIT_DONE = 'SEND_DATA_EDIT_DONE';

@@ -11,6 +11,7 @@ export const defaultEditState = {
     costumer: '',
     done: false,
     status: 'Waiting',
+    fullName: '',
   },
 };
 
@@ -19,14 +20,25 @@ export const actionOnEdit = (payload) => ({
   payload,
 });
 
+export const actionChangeTableRow = (payload) => ({
+  type: CHANGE_TABLE,
+  payload,
+});
+
 export function editTableReducer(state, action) {
-  debugger;
   if (state === undefined) {
     return defaultEditState;
   } if (action.type === ON_EDIT) {
-    return { data: { ...action.payload }, isEdit: false };
+    return {
+      data: {
+        ...state.data,
+        ...action.payload,
+        fullName: action.payload.fullname || `${action.payload.name} ${action.payload.surname}`,
+      },
+      isEdit: false,
+    };
   } if (action.type === SAVE_EDIT) {
-    return state;
+    return defaultEditState;
   } if (action.type === CHANGE_TABLE) {
     return { ...state, data: { ...state.data, ...action.payload } };
   }

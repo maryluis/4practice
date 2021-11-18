@@ -15,6 +15,6 @@ function orderReducer(state, action) {
     return { ...state, isLoading: false, data: [...action.payload] };
   } if (action.type === ERROR_ORDERS) {
     return { ...defaultState, error: 'Something wrong' };
-  }
+  } return state;
 }
 export default orderReducer;
