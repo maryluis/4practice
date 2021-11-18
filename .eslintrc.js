@@ -26,5 +26,9 @@ module.exports = {
     'no-plusplus': 0,
     'import/no-cycle': 0,
     'no-undef': 0,
+    'react/forbid-prop-types': 0,
+    'arrow-body-style': 0,
+    'array-callback-return': 0,
+    'consistent-return': 0,
   },
 };

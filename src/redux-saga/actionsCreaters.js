@@ -1,5 +1,5 @@
 import {
-  ERROR_LOGIN, OUT_LOGIN, PUT_LOGIN, SEND_LOGIN,
+  ERROR_LOGIN, GET_ORDERS, OUT_LOGIN, PUT_LOGIN, PUT_ORDERS, SEND_LOGIN,
 } from './actions';
 
 export const actionSendLogin = (payload) => ({
@@ -18,4 +18,13 @@ export const actionLoginError = (payload) => ({
 });
 export const actionOutLogin = () => ({
   type: OUT_LOGIN,
+});
+
+export const actionGetOrders = () => ({
+  type: GET_ORDERS,
+});
+
+export const actionPutOrders = (payload) => ({
+  type: PUT_ORDERS,
+  payload,
 });

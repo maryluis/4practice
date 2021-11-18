@@ -6,7 +6,7 @@ import { useLocation, Link } from 'react-router-dom';
 function Header() {
   const location = useLocation();
   return (
-    <Nav className="header p-2" tabs>
+    <Nav className="header p-2 px-3" tabs>
       <NavItem>
         <Link
           className={`${location.pathname === '/welcome' ? 'linkActive' : 'link'}`}

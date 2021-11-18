@@ -1,24 +1,110 @@
 import {
+  useReducer, useCallback, useState, useMemo, useEffect,
+} from 'react';
+import PropTypes from 'prop-types';
+import {
   FormGroup, Label, Col, Input, Form, CardTitle, Card, Button,
 } from 'reactstrap';
+import {
+  createFormReducer, defaultState, actionChangeForm, actionAddPosition, actionChangePosition,
+  actionFormClear,
+} from './localreducers/createFormReducer';
+import { putOrder } from '../../tools';
 
-function OnePosition() {
+function OnePosition({
+  isFirst, index, handleInput, inputValue,
+}) {
+  const inputHandler = useCallback((e) => {
+    handleInput(index, e.target.value);
+  });
+  const [inputState, changeState] = useState(inputValue);
+  const stateHandler = useCallback((e) => changeState(e.target.value));
   return (
     <FormGroup className="m-3">
-      <Label for="position" className="important">Позиция</Label>
+      <Label for="position" className={isFirst ? 'important' : ''}>Позиция</Label>
       <Col>
         <Input
           id="position"
-          name="position"
+          name={index}
           placeholder="Шариковые ручки"
           type="text"
+          onBlur={inputHandler}
+          onChange={stateHandler}
+          value={inputState}
         />
       </Col>
     </FormGroup>
   );
 }
 
+OnePosition.propTypes = {
+  isFirst: PropTypes.bool,
+  index: PropTypes.number,
+  inputValue: PropTypes.string,
+  handleInput: PropTypes.any,
+};
+OnePosition.defaultProps = {
+  isFirst: true,
+  index: 0,
+  inputValue: '',
+  handleInput: null,
+};
+
 function CreatePage() {
+  const [formData, dispatch] = useReducer(createFormReducer, defaultState);
+
+  const handleChange = useCallback((e) => {
+    dispatch(actionChangeForm({ [e.target.name]: e.target.value }));
+  }, []);
+
+  const handleChangePosition = useCallback((index, value) => {
+    dispatch(actionChangePosition({ index, value }));
+  }, []);
+
+  const addPositionHandler = useCallback(() => {
+    dispatch(actionAddPosition());
+  });
+  const IDValue = useMemo(() => {
+    let IDType;
+    let IDCostume;
+    const IDData = Date.now().toString().slice(7);
+    if (formData.type === 'Опт') {
+      IDType = 'о-';
+    } else {
+      IDType = 'р-';
+    }
+    if (formData.costumer === 'Поставщик 1') {
+      IDCostume = '1';
+    } else {
+      IDCostume = '2';
+    }
+    const IDString = IDType + IDCostume + IDData;
+    return IDString;
+  }, [formData.type, formData.costumer]);
+
+  const isCorrectForm = useMemo(() => {
+    // debugger;
+    if (formData.name.length < 1 || formData.email.length < 1) {
+      return false;
+    }
+    if (formData.surname.length < 1 || formData.number.length < 9) {
+      return false;
+    } if (formData.positions[0].length < 1 || formData.date.length < 1) {
+      return false;
+    }
+    return true;
+  }, [formData]);
+
+  const handleSubmit = useCallback(() => putOrder({
+    ...formData,
+    id: IDValue,
+  }), [formData, IDValue]);
+
+  const handleClear = useCallback(() => dispatch(actionFormClear()), []);
+
+  useEffect(() => {
+    return (dispatch(actionFormClear()));
+  }, []);
   return (
     <Card className="p-5">
       <CardTitle className="center" tag="h4">Заказчик</CardTitle>
@@ -31,6 +117,8 @@ function CreatePage() {
               name="email"
               placeholder="Ваш email"
               type="email"
+              onChange={handleChange}
+              value={formData.email}
             />
           </Col>
         </FormGroup>
@@ -42,6 +130,8 @@ function CreatePage() {
               name="name"
               placeholder="Ваше имя"
               type="text"
+              onChange={handleChange}
+              value={formData.name}
             />
           </Col>
         </FormGroup>
@@ -53,6 +143,8 @@ function CreatePage() {
               name="surname"
               placeholder="Ваша фамилия"
               type="text"
+              onChange={handleChange}
+              value={formData.surname}
             />
           </Col>
         </FormGroup>
@@ -60,27 +152,39 @@ function CreatePage() {
           <Label for="phone" className="important">Телефон</Label>
           <Col>
             <Input
-              id="phone"
-              name="phone"
+              id="number"
+              name="number"
               placeholder="Ваш телефон"
               type="number"
+              onChange={handleChange}
+              value={formData.number}
             />
           </Col>
         </FormGroup>
         <CardTitle className="center" tag="h4">Заказ</CardTitle>
-        <OnePosition />
-        <Button className="buttonPosition" outline>Добавить позицию</Button>
+        {formData.positions.map((item, i) => (
+          <OnePosition
+            data={item}
+            name={i}
+            isFirst={i === 0}
+            key={Math.random()}
+            index={i}
+            inputValue={formData.positions[i]}
+            handleInput={handleChangePosition}
+          />
+        ))}
+        <Button className="buttonPosition" outline onClick={addPositionHandler}>Добавить позицию</Button>
         <FormGroup className="m-3">
           <Label for="costumer">Поставщик</Label>
           <Col>
             <Input
               id="costumer"
               name="costumer"
-              value="Поставщик 1"
               type="select"
+              onChange={handleChange}
             >
-              <option>Поставщик 1</option>
-              <option>Поставщик 2</option>
+              <option value="Поставщик 1">Поставщик 1</option>
+              <option value="Поставщик 2">Поставщик 2</option>
             </Input>
           </Col>
         </FormGroup>
@@ -90,11 +194,11 @@ function CreatePage() {
             <Input
               id="type"
               name="type"
-              value="Розница"
+              onChange={handleChange}
               type="select"
             >
-              <option>Опт</option>
-              <option>Розница</option>
+              <option value="Розница">Розница</option>
+              <option value="Опт">Опт</option>
             </Input>
           </Col>
         </FormGroup>
@@ -106,7 +210,7 @@ function CreatePage() {
               name="type"
               type="text"
               disabled
-              value="p-"
+              value={IDValue}
             />
           </Col>
         </FormGroup>
@@ -118,6 +222,8 @@ function CreatePage() {
               name="date"
               placeholder="Дата заказа"
               type="date"
+              onChange={handleChange}
+              value={formData.date}
             />
           </Col>
         </FormGroup>
@@ -129,12 +235,14 @@ function CreatePage() {
               name="comment"
               placeholder="Ваш комментарий"
               type="textarea"
+              onChange={handleChange}
+              value={formData.comment}
             />
           </Col>
         </FormGroup>
         <div className="formBottom">
-          <Button className="m-2" color="primary">Отправить</Button>
-          <Button className="m-2" outline>Сброс</Button>
+          <Button disabled={!isCorrectForm} onClick={handleSubmit} className="m-2" color="primary">Отправить</Button>
+          <Button onClick={handleClear} className="m-2" outline>Сброс</Button>
         </div>
       </Form>
     </Card>
