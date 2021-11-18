@@ -1,7 +1,7 @@
 import {
-  useReducer, useCallback, useState, useMemo, useEffect,
+  useReducer, useCallback, useMemo, useEffect,
 } from 'react';
-import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import {
   FormGroup, Label, Col, Input, Form, CardTitle, Card, Button,
 } from 'reactstrap';
@@ -10,45 +10,7 @@ import {
   actionFormClear,
 } from './localreducers/createFormReducer';
 import { putOrder } from '../../tools';
-
-function OnePosition({
-  isFirst, index, handleInput, inputValue,
-}) {
-  const inputHandler = useCallback((e) => {
-    handleInput(index, e.target.value);
-  });
-  const [inputState, changeState] = useState(inputValue);
-  const stateHandler = useCallback((e) => changeState(e.target.value));
-  return (
-    <FormGroup className="m-3">
-      <Label for="position" className={isFirst ? 'important' : ''}>Позиция</Label>
-      <Col>
-        <Input
-          id="position"
-          name={index}
-          placeholder="Шариковые ручки"
-          type="text"
-          onBlur={inputHandler}
-          onChange={stateHandler}
-          value={inputState}
-        />
-      </Col>
-    </FormGroup>
-  );
-}
-
-OnePosition.propTypes = {
-  isFirst: PropTypes.bool,
-  index: PropTypes.number,
-  inputValue: PropTypes.string,
-  handleInput: PropTypes.any,
-};
-OnePosition.defaultProps = {
-  isFirst: true,
-  index: 0,
-  inputValue: '',
-  handleInput: null,
-};
+import { OnePosition } from '.';
 
 function CreatePage() {
   const [formData, dispatch] = useReducer(createFormReducer, defaultState);
@@ -64,6 +26,7 @@ function CreatePage() {
   const addPositionHandler = useCallback(() => {
     dispatch(actionAddPosition());
   });
+  const navigate = useNavigate();
   const IDValue = useMemo(() => {
     let IDType;
     let IDCostume;
@@ -83,22 +46,24 @@ function CreatePage() {
   }, [formData.type, formData.costumer]);
 
   const isCorrectForm = useMemo(() => {
-    // debugger;
     if (formData.name.length < 1 || formData.email.length < 1) {
       return false;
     }
     if (formData.surname.length < 1 || formData.number.length < 9) {
       return false;
-    } if (formData.positions[0].length < 1 || formData.date.length < 1) {
+    } if (formData.positions[0].length < 1 || Date.parse(formData.date) < Date.now()) {
       return false;
     }
     return true;
   }, [formData]);
 
-  const handleSubmit = useCallback(() => putOrder({
-    ...formData,
-    id: IDValue,
-  }), [formData, IDValue]);
+  const handleSubmit = useCallback(async () => {
+    await putOrder({
+      ...formData,
+      id: IDValue,
+    });
+    navigate('/orders');
+  }, [formData, IDValue]);
 
   const handleClear = useCallback(() => dispatch(actionFormClear()), []);
 

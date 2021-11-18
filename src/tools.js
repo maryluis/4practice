@@ -30,5 +30,9 @@ export async function putOrder(data) {
 export async function getOrders() {
   let response = await fetch(URL_ORDERS);
   response = await response.json();
-  return values(response);
+  const newArr = [];
+  for (const key in response) {
+    newArr.push({ id: key, ...response[key] });
+  }
+  return newArr;
 }

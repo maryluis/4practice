@@ -30,5 +30,7 @@ module.exports = {
     'arrow-body-style': 0,
     'array-callback-return': 0,
     'consistent-return': 0,
+    'guard-for-in': 0,
+    'no-restricted-syntax': 0,
   },
 };

@@ -1,17 +1,29 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CardText, CardTitle, Card } from 'reactstrap';
+import {
+  CardText, Card, Table,
+} from 'reactstrap';
+import { OrderRow } from '.';
 import { actionGetOrders } from '../../redux-saga/actionsCreaters';
 
 function OrdersPage() {
   const dispatch = useDispatch();
-  const state = useSelector((store) => store);
+  const orders = useSelector((store) => store.orders.data);
   useEffect(() => dispatch(actionGetOrders()), []);
+  const THTittles = ['Дата', 'Имя', 'ID', 'Тип', 'Заказчик', 'Поставщик', 'Выполнен', 'Статус', 'Edit'];
   return (
     <Card>
-      <CardTitle>Здесь будет блядская таблица</CardTitle>
-      <button type="button" onClick={() => console.log(state)}>sd;csiyhj</button>
       <CardText />
+      <Table bordered className="table-striped">
+        <thead>
+          <tr>
+            {THTittles.map((item) => <th key={item}>{item}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {orders.map((item) => <OrderRow key={item.id} data={item} />)}
+        </tbody>
+      </Table>
     </Card>
   );
 }
