@@ -11,8 +11,8 @@ function sendDataReducer(state, action) {
     case SEND_DATA_EDIT_DONE:
     case SEND_DATA_ORDER_DONE: return { isLoading: false, data: {}, done: true };
     case SEND_DATA_UPDATE: return { isLoading: false, data: {}, done: false };
+    default: return state;
   }
-  return state;
 }
 
 export default sendDataReducer;
