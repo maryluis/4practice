@@ -7,7 +7,7 @@ const defaultState = {
   isLogin: false,
   isAdmin: false,
   isLoading: false,
-  error: null,
+  error: false,
 };
 
 function loginReducer(state, action) {

@@ -62,8 +62,19 @@
   display: flex;
   justify-content: center;
   position: absolute;
-  top: 350px;
+  top: 390px;
 }
 .pageSpan {
   margin: 5px;
+}
+.formLogin {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  top: 200px;
+}
+.none {
+  display: none;
+  position: absolute;
 }

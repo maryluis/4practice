@@ -9,6 +9,7 @@ export const defaultState = {
   surname: '',
   number: '',
   positions: [''],
+  costumerName: 'Барановская Е.В.',
   costumer: 'Поставщик 1',
   type: 'Розница',
   date: '',

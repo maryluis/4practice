@@ -65,6 +65,7 @@ function CreatePage() {
         positions: formData.positions,
         email: formData.email,
         number: formData.number,
+        costumerName: formData.costumerName,
         date: formData.date,
         status: 'New',
         fullName: `${formData.name} ${formData.surname}`,
