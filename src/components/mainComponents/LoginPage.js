@@ -30,7 +30,7 @@ function LoginPage() {
     }
   }, [isLogin]);
   return (
-    <Card className="p-5 relative">
+    <Card className="p-5 relative  border-0">
       <CardTitle className="center" tag="h4">Введите данные чтобы продолжить</CardTitle>
       <Alert className={`${!error && 'none'} 'alert'`} color="danger"><span>Введено некоректные данные</span></Alert>
       <Form className="formLogin">
