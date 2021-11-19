@@ -14,7 +14,7 @@ function OrderRow({ data }) {
   const [rowData, dispatch] = useReducer(editTableReducer, defaultEditState);
   const handleClick = useCallback(() => {
     dispatch(actionOnEdit(data));
-  });
+  }, [dispatch]);
   const handleChange = useCallback((e) => {
     dispatch(actionChangeTableRow({ [e.target.name]: e.target.value }));
   }, []);

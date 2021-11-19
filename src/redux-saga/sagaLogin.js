@@ -1,4 +1,5 @@
 import { takeEvery, call, put } from 'redux-saga/effects';
+import forEach from 'lodash/forEach';
 import { SEND_LOGIN } from './actions';
 import { applyLogin } from '../tools';
 import { actionLoginError, actionPutLogin } from './actionsCreaters';
@@ -8,13 +9,12 @@ function* loginSagaWorker(action) {
   const loginData = action.payload;
   let isLogged = false;
   let userData;
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].name === loginData.login && data[i].password === loginData.password) {
+  forEach(data, (item) => {
+    if (item.name === loginData.login && item.password === loginData.password) {
+      userData = item;
       isLogged = true;
-      userData = data[i];
-      break;
     }
-  }
+  });
   if (isLogged) {
     yield put(actionPutLogin(userData));
   } else {

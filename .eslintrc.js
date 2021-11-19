@@ -32,5 +32,6 @@ module.exports = {
     'consistent-return': 0,
     'guard-for-in': 0,
     'no-restricted-syntax': 0,
+    'default-case': 0,
   },
 };

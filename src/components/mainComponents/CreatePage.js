@@ -21,7 +21,7 @@ function CreatePage() {
 
   const handleChange = useCallback((e) => {
     dispatch(actionChangeForm({ [e.target.name]: e.target.value }));
-  }, []);
+  }, [dispatch]);
 
   const handleChangePosition = useCallback((index, value) => {
     dispatch(actionChangePosition({ index, value }));
@@ -49,15 +49,12 @@ function CreatePage() {
   }, [formData.type, formData.costumer]);
 
   const isCorrectForm = useMemo(() => {
-    if (formData.name.length < 1 || formData.email.length < 1) {
-      return false;
-    }
-    if (formData.surname.length < 1 || formData.number.length < 9) {
-      return false;
-    } if (formData.positions[0].length < 1 || Date.parse(formData.date) < Date.now()) {
-      return false;
-    }
-    return true;
+    const hasName = !!formData.name.length;
+    const hasEmail = !!formData.email.length;
+    const hasSurname = !!formData.surname.length;
+    const hasProduct = !!formData.positions[0]?.length;
+    const isDateValid = Date.parse(formData.date) > Date.now();
+    return hasName && hasEmail && hasSurname && hasProduct && isDateValid;
   }, [formData]);
 
   const handleSubmit = useCallback(() => {

@@ -13,7 +13,7 @@ function OnePosition({
     handleInput(index, e.target.value);
   });
   const [inputState, changeState] = useState(inputValue);
-  const stateHandler = useCallback((e) => changeState(e.target.value));
+  const stateHandler = useCallback((e) => changeState(e.target.value), []);
   return (
     <FormGroup className="m-3">
       <Label for="position" className={isFirst ? 'important' : ''}>Позиция</Label>

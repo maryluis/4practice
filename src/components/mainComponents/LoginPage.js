@@ -19,15 +19,11 @@ function LoginPage() {
       changePassword(e.target.value);
     }
   }, []);
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback((e) => {
+    e.preventDefault();
     dispatch(actionSendLogin({ login, password }));
   }, [login, password]);
 
-  const handleClickEnter = useCallback((e) => {
-    if (e.key === 'Enter') {
-      dispatch(actionSendLogin({ login, password }));
-    }
-  }, [login, password]);
   useEffect(() => {
     if (isLogin) {
       navigate('/welcome');
@@ -35,7 +31,7 @@ function LoginPage() {
   }, [isLogin]);
   return (
     <Card className="p-5">
-      <CardTitle className="center" tag="h4">Sign in to continue</CardTitle>
+      <CardTitle className="center" tag="h4">Введите данные чтобы продолжить</CardTitle>
       <Form>
         {error && <Alert color="danger"><span>Введено некоректные данные</span></Alert>}
         <FormGroup className="m-3" row>
@@ -43,7 +39,7 @@ function LoginPage() {
           <Col sm={8}>
             <Input
               onChange={handleChange}
-              onKeyPress={handleClickEnter}
+              onSubmit={handleSubmit}
               id="login"
               name="login"
               placeholder="login"
@@ -56,7 +52,7 @@ function LoginPage() {
           <Col sm={8}>
             <Input
               onChange={handleChange}
-              onKeyPress={handleClickEnter}
+              onSubmit={handleSubmit}
               id="password"
               name="password"
               placeholder="password"
@@ -65,7 +61,7 @@ function LoginPage() {
           </Col>
         </FormGroup>
         <FormGroup className="center">
-          <Button color="secondary" onClick={handleSubmit}>Send</Button>
+          <Button type="submit" color="secondary" onClick={handleSubmit}>Send</Button>
         </FormGroup>
       </Form>
     </Card>

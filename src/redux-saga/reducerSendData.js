@@ -3,14 +3,14 @@ import {
 } from './actions';
 
 function sendDataReducer(state, action) {
-  if (state === undefined) {
-    return { isLoading: false, data: {}, done: false };
-  } if (action.type === SEND_DATA_EDIT || action.type === SEND_DATA_ORDER) {
-    return { isLoading: true, data: { ...action.payload }, done: false };
-  } if (action.type === SEND_DATA_EDIT_DONE || action.type === SEND_DATA_ORDER_DONE) {
-    return { isLoading: false, data: {}, done: true };
-  } if (action.type === SEND_DATA_UPDATE) {
-    return { isLoading: false, data: {}, done: false };
+  if (state === undefined) return { isLoading: false, data: {}, done: false };
+
+  switch (action.type) {
+    case SEND_DATA_EDIT:
+    case SEND_DATA_ORDER: return { isLoading: true, data: { ...action.payload }, done: false };
+    case SEND_DATA_EDIT_DONE:
+    case SEND_DATA_ORDER_DONE: return { isLoading: false, data: {}, done: true };
+    case SEND_DATA_UPDATE: return { isLoading: false, data: {}, done: false };
   }
   return state;
 }
