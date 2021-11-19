@@ -17,8 +17,8 @@ function OrdersPage() {
   const { isAdmin, isLogin } = useSelector((store) => store.loginData);
   const isLoading = useSelector((store) => store.sendData.isLoading);
   const [page, changePage] = useState(1);
-  const pageIncrement = useCallback(() => changePage(page + 1));
-  const pageDecrement = useCallback(() => changePage(page - 1));
+  const pageIncrement = useCallback(() => changePage(page + 1), [page]);
+  const pageDecrement = useCallback(() => changePage(page - 1), [page]);
   const sortHandler = useCallback((e) => {
     dispatch(actionSortOrders(e.target.id));
   }, []);
@@ -58,7 +58,7 @@ function OrdersPage() {
         </thead>
         <tbody>
           {ordersPage.length > 0
-          && ordersPage[page - 1].map((item) => <OrderRow key={item.id} data={item} />)}
+          && ordersPage[page - 1].map((item) => <OrderRow key={item.gID} data={item} />)}
         </tbody>
       </Table>
       <div className="ordersPageBottom">
