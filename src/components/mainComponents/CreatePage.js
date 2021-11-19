@@ -1,19 +1,23 @@
 import {
   useReducer, useCallback, useMemo, useEffect,
 } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
-  FormGroup, Label, Col, Input, Form, CardTitle, Card, Button,
+  FormGroup, Label, Col, Input, Form, CardTitle, Card, Button, FormFeedback,
 } from 'reactstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
   createFormReducer, defaultState, actionChangeForm, actionAddPosition, actionChangePosition,
   actionFormClear,
 } from './localreducers/createFormReducer';
-import { putOrder } from '../../tools';
 import { OnePosition } from '.';
+import { actionSendOrder, actionSendUpdate } from '../../redux-saga/actionsCreaters';
 
 function CreatePage() {
+  const globalDispatch = useDispatch();
+  const orderDone = useSelector((state) => state.sendData.done);
   const [formData, dispatch] = useReducer(createFormReducer, defaultState);
+  const navigate = useNavigate();
 
   const handleChange = useCallback((e) => {
     dispatch(actionChangeForm({ [e.target.name]: e.target.value }));
@@ -26,7 +30,6 @@ function CreatePage() {
   const addPositionHandler = useCallback(() => {
     dispatch(actionAddPosition());
   });
-  const navigate = useNavigate();
   const IDValue = useMemo(() => {
     let IDType;
     let IDCostume;
@@ -57,12 +60,13 @@ function CreatePage() {
     return true;
   }, [formData]);
 
-  const handleSubmit = useCallback(async () => {
-    await putOrder({
-      ...formData,
-      id: IDValue,
-    });
-    navigate('/orders');
+  const handleSubmit = useCallback(() => {
+    globalDispatch(actionSendOrder(
+      {
+        ...formData,
+        id: IDValue,
+      },
+    ));
   }, [formData, IDValue]);
 
   const handleClear = useCallback(() => dispatch(actionFormClear()), []);
@@ -70,6 +74,12 @@ function CreatePage() {
   useEffect(() => {
     return (dispatch(actionFormClear()));
   }, []);
+  useEffect(() => {
+    if (orderDone) {
+      navigate('/orders');
+    }
+    return (globalDispatch(actionSendUpdate()));
+  }, [orderDone]);
   return (
     <Card className="p-5">
       <CardTitle className="center" tag="h4">Заказчик</CardTitle>
@@ -121,9 +131,16 @@ function CreatePage() {
               name="number"
               placeholder="Ваш телефон"
               type="number"
+              invalid={formData.number.length < 9}
               onChange={handleChange}
               value={formData.number}
             />
+            { formData.number.length < 9
+            && (
+            <FormFeedback>
+              Номер телефона должен содержать минимум 9 цифр
+            </FormFeedback>
+            )}
           </Col>
         </FormGroup>
         <CardTitle className="center" tag="h4">Заказ</CardTitle>
