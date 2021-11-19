@@ -5,7 +5,6 @@ export const CHANGE_TABLE = 'CHANGE_TABLE';
 export const defaultEditState = {
   isEdit: true,
   data: {
-    name: '',
     costumerName: 'Барановская Е.В.',
     type: '',
     costumer: '',
@@ -18,6 +17,10 @@ export const defaultEditState = {
 export const actionOnEdit = (payload) => ({
   type: ON_EDIT,
   payload,
+});
+
+export const actionSaveEdit = () => ({
+  type: SAVE_EDIT,
 });
 
 export const actionChangeTableRow = (payload) => ({
@@ -33,7 +36,6 @@ export function editTableReducer(state, action) {
       data: {
         ...state.data,
         ...action.payload,
-        fullName: action.payload.fullname || `${action.payload.name} ${action.payload.surname}`,
       },
       isEdit: false,
     };

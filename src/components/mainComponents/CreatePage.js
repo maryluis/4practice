@@ -63,7 +63,13 @@ function CreatePage() {
   const handleSubmit = useCallback(() => {
     globalDispatch(actionSendOrder(
       {
-        ...formData,
+        type: formData.type,
+        costumer: formData.costumer,
+        positions: formData.positions,
+        email: formData.email,
+        number: formData.number,
+        date: formData.date,
+        fullName: `${formData.name} ${formData.surname}`,
         id: IDValue,
       },
     ));

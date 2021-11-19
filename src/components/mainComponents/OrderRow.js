@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import {
   Button, Input,
 } from 'reactstrap';
-import { useCallback, useReducer } from 'react';
-import { useDispatch } from 'react-redux';
+import { useCallback, useMemo, useReducer } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { actionSendEditOrder } from '../../redux-saga/actionsCreaters';
 import {
-  defaultEditState, actionChangeTableRow, editTableReducer, actionOnEdit,
+  defaultEditState, actionChangeTableRow, editTableReducer, actionOnEdit, actionSaveEdit,
 } from './localreducers/editTableReducer';
 
 function OrderRow({ data }) {
@@ -21,7 +21,9 @@ function OrderRow({ data }) {
 
   const handleSubmit = useCallback(() => {
     globalDispatch(actionSendEditOrder(rowData.data));
+    dispatch(actionSaveEdit());
   });
+  const isAdmin = useSelector((state) => state.loginData.isAdmin);
   const styledStatus = {
     Waiting: 'table-primary',
     New: 'table-success',
@@ -29,6 +31,13 @@ function OrderRow({ data }) {
     Failed: 'table-danger',
     Finished: 'table-active',
   };
+  const isCorrectRow = useMemo(() => {
+    if (rowData.data.costumerName.length < 1) {
+      return false;
+    } if (rowData.data.fullName.length < 1) {
+      return false;
+    } return true;
+  }, [rowData]);
   return (
     <tr>
       { rowData.isEdit
@@ -42,7 +51,7 @@ function OrderRow({ data }) {
             <td>{data.costumer}</td>
             <td>{data.done || '-'}</td>
             <td className={styledStatus[data.status || 'Waiting']}>{data.status || 'Waiting'}</td>
-            <td><Button color="secondary" className="tableButton" onClick={handleClick}>Edit</Button></td>
+            {isAdmin && <td><Button color="secondary" className="tableButton" onClick={handleClick}>Edit</Button></td>}
           </>
         ) : (
           <>
@@ -51,6 +60,8 @@ function OrderRow({ data }) {
               <Input
                 id="costumerName"
                 name="costumerName"
+                invalid={rowData.data.costumerName.length < 1}
+                placeholder="Поле не должно быть пустым"
                 value={rowData.data.costumerName}
                 type="text"
                 onChange={handleChange}
@@ -74,6 +85,8 @@ function OrderRow({ data }) {
               <Input
                 id="fullName"
                 name="fullName"
+                invalid={rowData.data.fullName.length < 1}
+                placeholder="Поле не должно быть пустым"
                 value={rowData.data.fullName}
                 onChange={handleChange}
                 type="text"
@@ -115,7 +128,7 @@ function OrderRow({ data }) {
                 <option value="Finished">Finished</option>
               </Input>
             </td>
-            <td><Button color="warning" className="tableButton" onClick={handleSubmit}>Done</Button></td>
+            {isAdmin && <td><Button disabled={!isCorrectRow} color="warning" className="tableButton" onClick={handleSubmit}>Done</Button></td>}
           </>
         )}
     </tr>

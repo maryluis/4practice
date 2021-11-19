@@ -49,3 +49,11 @@
 .tableButton {
   width: 70px;
 }
+.loadingOrder {
+  position: absolute;
+  top: -55px;
+  left: 45%;
+}
+.orderPage {
+  margin-top: 60px;
+}

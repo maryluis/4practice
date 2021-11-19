@@ -1,7 +1,8 @@
 import {
   ERROR_LOGIN, GET_ORDERS, OUT_LOGIN,
   PUT_LOGIN, PUT_ORDERS, SEND_DATA_EDIT,
-  SEND_DATA_EDIT_DONE, SEND_DATA_ORDER, SEND_DATA_ORDER_DONE, SEND_DATA_UPDATE, SEND_LOGIN,
+  SEND_DATA_EDIT_DONE, SEND_DATA_ORDER, SEND_DATA_ORDER_DONE,
+  SEND_DATA_UPDATE, SEND_LOGIN, SORT_ORDERS,
 } from './actions';
 
 export const actionSendLogin = (payload) => ({
@@ -28,6 +29,11 @@ export const actionGetOrders = () => ({
 
 export const actionPutOrders = (payload) => ({
   type: PUT_ORDERS,
+  payload,
+});
+
+export const actionSortOrders = (payload) => ({
+  type: SORT_ORDERS,
   payload,
 });
 

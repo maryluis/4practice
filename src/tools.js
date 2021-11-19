@@ -11,6 +11,22 @@ export async function applyLogin() {
   return values(response);
 }
 
+export async function putLogin() {
+  const response = await fetch(URL_LOGIN, {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify({ isAdmin: false, name: 'loki', password: '123123' }),
+  });
+  await response.json();
+}
+
 export async function putOrder(data) {
   const positionsArray = data.positions.filter((item) => item.length > 0);
   const newData = { ...data, positions: [...positionsArray] };

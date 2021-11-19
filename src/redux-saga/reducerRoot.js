@@ -5,7 +5,7 @@ import orderReducer from './reducerOrders';
 import sendDataReducer from './reducerSendData';
 
 const store = createStore(combineReducers({
-  editData: loginReducer,
+  loginData: loginReducer,
   orders: orderReducer,
   sendData: sendDataReducer,
 }), applyMiddleware(SagaMiddleware));
