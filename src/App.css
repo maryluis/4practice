@@ -62,7 +62,7 @@
   display: flex;
   justify-content: center;
   position: absolute;
-  top: 250px;
+  top: 370px;
 }
 .pageSpan {
   margin: 5px;
@@ -72,7 +72,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  top: 200px;
+  top: 150px;
 }
 .none {
   display: none;
