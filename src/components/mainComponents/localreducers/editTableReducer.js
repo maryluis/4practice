@@ -5,7 +5,7 @@ export const CHANGE_TABLE = 'CHANGE_TABLE';
 export const defaultEditState = {
   isEdit: true,
   data: {
-    costumerName: 'Барановская Е.В.',
+    costumerName: '',
     type: '',
     costumer: '',
     done: false,

@@ -39,12 +39,12 @@ function OrderRow({ data }) {
     } return true;
   }, [rowData]);
   return (
-    <tr>
+    <tr className="tableRow">
       { rowData.isEdit
         ? (
           <>
             <td>{data.date.replace(/-/gi, '.')}</td>
-            <td>Барановская Е.В.</td>
+            <td>{data.costumerName || 'Екатерина Е.В'}</td>
             <td>{data.id}</td>
             <td>{data.type}</td>
             <td>{data.fullName || `${data.name} ${data.surname}`}</td>

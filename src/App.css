@@ -57,3 +57,13 @@
 .orderPage {
   margin-top: 60px;
 }
+.ordersPageBottom {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 350px;
+}
+.pageSpan {
+  margin: 5px;
+}

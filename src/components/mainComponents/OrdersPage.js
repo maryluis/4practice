@@ -1,6 +1,7 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  Button,
   Card, Table,
 } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
@@ -9,13 +10,15 @@ import { actionGetOrders, actionSortOrders } from '../../redux-saga/actionsCreat
 
 function OrdersPage() {
   const dispatch = useDispatch();
-  const orders = useSelector((store) => store.orders.data);
   const isDone = useSelector((store) => store.sendData.done);
+  useEffect(() => dispatch(actionGetOrders()), [isDone]);
   const navigate = useNavigate();
+  const ordersPage = useSelector((store) => store.orders.dataPages);
   const { isAdmin, isLogin } = useSelector((store) => store.loginData);
   const isLoading = useSelector((store) => store.sendData.isLoading);
-
-  useEffect(() => dispatch(actionGetOrders()), [isDone]);
+  const [page, changePage] = useState(1);
+  const pageIncrement = useCallback(() => changePage(page + 1));
+  const pageDecrement = useCallback(() => changePage(page - 1));
   const sortHandler = useCallback((e) => {
     dispatch(actionSortOrders(e.target.id));
   }, []);
@@ -38,7 +41,7 @@ function OrdersPage() {
       {isLoading && (
       <div className="spinner-border loadingOrder text-primary" style={{ width: '3rem', height: '3rem' }} role="status" />
       )}
-      <Table bordered className="table-striped">
+      <Table bordered className="table-striped tableHeight">
         <thead>
           <tr>
             {THTittles.map(({ title, type }) => (
@@ -54,9 +57,15 @@ function OrdersPage() {
           </tr>
         </thead>
         <tbody>
-          {orders.map((item) => <OrderRow key={item.id} data={item} />)}
+          {ordersPage.length > 0
+          && ordersPage[page - 1].map((item) => <OrderRow key={item.id} data={item} />)}
         </tbody>
       </Table>
+      <div className="ordersPageBottom">
+        <Button className="tableButton" disabled={page === 1} onClick={pageDecrement}>Last</Button>
+        <span className="pageSpan">{page}</span>
+        <Button className="tableButton" disabled={page === ordersPage.length} onClick={pageIncrement}>Next</Button>
+      </div>
     </Card>
   );
 }
