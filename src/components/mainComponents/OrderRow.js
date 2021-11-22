@@ -26,7 +26,7 @@ function OrderRow({ data }) {
     globalDispatch(actionSendEditOrder(rowData.data));
     dataEdited(rowData.data);
     dispatch(actionSaveEdit());
-  });
+  }, []);
   const isAdmin = useSelector((state) => state.loginData.isAdmin);
   const styledStatus = {
     Waiting: 'table-primary',

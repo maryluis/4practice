@@ -15,7 +15,7 @@ import { actionSendOrder, actionSendUpdate } from '../../redux-saga/actionsCreat
 
 function CreatePage() {
   const globalDispatch = useDispatch();
-  const orderDone = useSelector((state) => state.sendData.done);
+  const orderDone = useSelector((state) => state.sendData.doneOrder);
   const [formData, dispatch] = useReducer(createFormReducer, defaultState);
   const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ function CreatePage() {
 
   const addPositionHandler = useCallback(() => {
     dispatch(actionAddPosition());
-  });
+  }, [dispatch]);
   const IDValue = useMemo(() => {
     let IDType;
     let IDCostume;

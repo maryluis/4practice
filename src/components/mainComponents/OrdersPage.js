@@ -10,7 +10,7 @@ import { actionGetOrders, actionSortOrders } from '../../redux-saga/actionsCreat
 
 function OrdersPage() {
   const dispatch = useDispatch();
-  const isDone = useSelector((store) => store.sendData.done);
+  const isDone = useSelector((store) => store.sendData.doneEdit);
   useEffect(() => dispatch(actionGetOrders()), [isDone]);
   const navigate = useNavigate();
   const ordersPage = useSelector((store) => store.orders.dataPages);
