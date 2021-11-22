@@ -55,6 +55,7 @@ function LoginPage() {
               onSubmit={handleSubmit}
               id="password"
               name="password"
+              autoComplete="on"
               placeholder="password"
               type="password"
             />
