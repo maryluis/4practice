@@ -32,7 +32,7 @@ function LoginPage() {
   return (
     <Card className="p-5 relative  border-0">
       <CardTitle className="center" tag="h4">Введите данные чтобы продолжить</CardTitle>
-      <Alert className={`${!error && 'none'} 'alert'`} color="danger"><span>Введено некоректные данные</span></Alert>
+      <Alert className={`${!error ? 'none' : ''}`} color="danger"><span>Введено некоректные данные</span></Alert>
       <Form className="formLogin">
         <FormGroup className="m-3" row>
           <Label sm={2} for="login">Login</Label>
