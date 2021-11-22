@@ -30,6 +30,7 @@ function CreatePage() {
   const addPositionHandler = useCallback(() => {
     dispatch(actionAddPosition());
   }, [dispatch]);
+
   const IDValue = useMemo(() => {
     let IDType;
     let IDCostume;
@@ -151,13 +152,11 @@ function CreatePage() {
         <CardTitle className="center" tag="h4">Заказ</CardTitle>
         {formData.positions.map((item, i) => (
           <OnePosition
-            data={item}
-            name={i}
-            isFirst={i === 0}
-            key={Math.random()}
+            value={item}
+            // eslint-disable-next-line react/no-array-index-key
+            key={i}
+            onChange={handleChangePosition}
             index={i}
-            inputValue={formData.positions[i]}
-            handleInput={handleChangePosition}
           />
         ))}
         <Button className="buttonPosition" outline onClick={addPositionHandler}>Добавить позицию</Button>

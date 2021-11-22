@@ -1,31 +1,28 @@
-import {
-  useCallback, useState,
-} from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
+
 import {
   FormGroup, Label, Col, Input,
 } from 'reactstrap';
 
 function OnePosition({
-  isFirst, index, handleInput, inputValue,
+  value, onChange, index,
 }) {
-  const inputHandler = useCallback((e) => {
-    handleInput(index, e.target.value);
-  });
-  const [inputState, changeState] = useState(inputValue);
-  const stateHandler = useCallback((e) => changeState(e.target.value), []);
+  const handleChange = useCallback((e) => {
+    onChange(index, e.target.value);
+  }, [onChange, index]);
+
   return (
     <FormGroup className="m-3">
-      <Label for="position" className={isFirst ? 'important' : ''}>Позиция</Label>
+      <Label for="position" className={index ? '' : 'important'}>{`Позиция ${index + 1}`}</Label>
       <Col>
         <Input
+          autoFocus={!!index}
           id="position"
-          name={index}
           placeholder="Шариковые ручки"
           type="text"
-          onBlur={inputHandler}
-          onChange={stateHandler}
-          value={inputState}
+          onChange={handleChange}
+          value={value}
         />
       </Col>
     </FormGroup>
@@ -33,16 +30,12 @@ function OnePosition({
 }
 
 OnePosition.propTypes = {
-  isFirst: PropTypes.bool,
-  index: PropTypes.number,
-  inputValue: PropTypes.string,
-  handleInput: PropTypes.any,
+  value: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  index: PropTypes.number.isRequired,
 };
 OnePosition.defaultProps = {
-  isFirst: true,
-  index: 0,
-  inputValue: '',
-  handleInput: null,
+  value: '',
 };
 
 export default OnePosition;
