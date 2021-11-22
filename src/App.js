@@ -2,7 +2,7 @@ import './App.css';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import { store } from './redux-saga';
+import store from './redux-saga/reducerRoot';
 import { Header, Main } from './components';
 
 function App() {

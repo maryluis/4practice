@@ -4,7 +4,6 @@ import {
 
 function sendDataReducer(state, action) {
   if (state === undefined) return { isLoading: false, data: {}, done: false };
-
   switch (action.type) {
     case SEND_DATA_EDIT: return {
       isLoading: true, data: action.payload, doneEdit: false, doneOrder: false,

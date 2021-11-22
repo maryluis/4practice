@@ -40,7 +40,7 @@ export function editTableReducer(state, action) {
       isEdit: false,
     };
   } if (action.type === SAVE_EDIT) {
-    return defaultEditState;
+    return { ...state, isEdit: true };
   } if (action.type === CHANGE_TABLE) {
     return { ...state, data: { ...state.data, ...action.payload } };
   }

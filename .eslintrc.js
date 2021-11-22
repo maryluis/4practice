@@ -33,6 +33,5 @@ module.exports = {
     'guard-for-in': 0,
     'no-restricted-syntax': 0,
     'default-case': 0,
-    // 'react/no-unused-prop-types': 0,
   },
 };
