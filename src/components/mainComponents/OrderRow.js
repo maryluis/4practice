@@ -2,7 +2,9 @@ import PropTypes from 'prop-types';
 import {
   Button, Input,
 } from 'reactstrap';
-import { useCallback, useMemo, useReducer } from 'react';
+import {
+  useCallback, useMemo, useReducer, useState,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionSendEditOrder } from '../../redux-saga/actionsCreaters';
 import {
@@ -11,16 +13,18 @@ import {
 
 function OrderRow({ data }) {
   const globalDispatch = useDispatch();
+  const [innerData, dataEdited] = useState(data);
   const [rowData, dispatch] = useReducer(editTableReducer, defaultEditState);
   const handleClick = useCallback(() => {
-    dispatch(actionOnEdit(data));
-  }, [dispatch]);
+    dispatch(actionOnEdit(innerData));
+  }, [dispatch, innerData]);
   const handleChange = useCallback((e) => {
     dispatch(actionChangeTableRow({ [e.target.name]: e.target.value }));
   }, []);
 
   const handleSubmit = useCallback(() => {
     globalDispatch(actionSendEditOrder(rowData.data));
+    dataEdited(rowData.data);
     dispatch(actionSaveEdit());
   });
   const isAdmin = useSelector((state) => state.loginData.isAdmin);
