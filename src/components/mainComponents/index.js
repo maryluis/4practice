@@ -3,4 +3,3 @@ export { default as WelcomePage } from './WelcomePage';
 export { default as OrdersPage } from './OrdersPage';
 export { default as CreatePage } from './CreatePage';
 export { default as OrderRow } from './OrderRow';
-export { default as OnePosition } from './OnePosition';
