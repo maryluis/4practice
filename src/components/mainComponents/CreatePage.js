@@ -7,7 +7,7 @@ import {
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { keys, filter, map } from 'lodash';
+import { filter } from 'lodash';
 import { Formik, FieldArray } from 'formik';
 import { actionSendUpdate, actionSendOrder } from '../../redux-saga/actionsCreaters';
 
@@ -32,8 +32,9 @@ function CreatePage() {
       .min(9, 'Не менее 9 символов')
       .max(15, 'Не более 15 символов'),
     date: yup.string().required('Выберите дату'),
-    positionItem1: yup.string().required('Выберите хотя бы одну позицию'),
+    positionItem1: yup.string().required('Должна быть хотя бы одна позиция'),
   });
+
   return (
     <Card className="p-5">
       <CardTitle className="center" tag="h4">Заказчик</CardTitle>
@@ -44,7 +45,6 @@ function CreatePage() {
           surname: '',
           number: '',
           positions: [''],
-          positionItem1: '',
           costumerName: 'Барановская Е.В.',
           id: `р-1${Date.now().toString().slice(7)}`,
           costumer: 'Поставщик 1',
@@ -55,8 +55,7 @@ function CreatePage() {
         validateOnBlur
         validationSchema={validationYup}
         onSubmit={(data) => {
-          const keysPositions = filter(keys(data), (e) => e.indexOf('positionItem') > -1);
-          const positions = map(keysPositions, (e) => data[e]);
+          const positions = filter(data.positions, (e) => e.length > 0);
           const allData = {
             email: data.email,
             fullName: `${data.name} ${data.surname}`,
@@ -86,6 +85,12 @@ function CreatePage() {
               idType = 'o-';
             }
             setFieldValue('id', `${idType + Date.now().toString().slice(7)}`);
+          };
+          const handlePositions = (e) => {
+            setFieldValue(`positions[${e.target.attributes.id.nodeValue}]`, e.target.value);
+            if (+e.target.attributes.id.nodeValue === 0) {
+              setFieldValue('positionItem1', e.target.value);
+            }
           };
           return (
             <Form onSubmit={handleSubmit}>
@@ -185,13 +190,13 @@ function CreatePage() {
                             <Input
                               name={`positionItem${i + 1}`}
                               autoFocus={!!i}
-                              id="position"
+                              id={i}
                               placeholder="Шариковые ручки"
                               type="text"
                               onBlur={handleBlur}
                               invalid={i === 0 && touched.positionItem1 && !!errors.positionItem1}
                               onKeyPress={keyPressHandler}
-                              onChange={handleChange}
+                              onChange={handlePositions}
                             />
                             {i === 0 && (
                             <FormFeedback>
