@@ -23,6 +23,38 @@ function CreatePage() {
     return (globalDispatch(actionSendUpdate()));
   }, [orderDone]);
 
+  const formValue = {
+    email: '',
+    name: '',
+    surname: '',
+    number: '',
+    positions: [''],
+    positionItem1: '',
+    costumerName: 'Барановская Е.В.',
+    id: `р-1${Date.now().toString().slice(7)}`,
+    costumer: 'Поставщик 1',
+    type: 'Розница',
+    date: '',
+    comment: '',
+  };
+  const onSubmitForm = (data) => {
+    const positions = filter(data.positions, (e) => e.length > 0);
+    const allData = {
+      email: data.email,
+      fullName: `${data.name} ${data.surname}`,
+      number: data.number,
+      positions,
+      costumerName: data.costumerName,
+      costumer: data.costumer,
+      type: data.type,
+      date: data.date,
+      comment: data.comment,
+      status: 'New',
+      id: data.id,
+    };
+    globalDispatch(actionSendOrder(allData));
+  };
+
   const validationYup = yup.object().shape({
     name: yup.string().required('Поле не должно быть пустым'),
     email: yup.string().email('Значение некорректно').required('Поле не должно быть пустым'),
@@ -39,40 +71,11 @@ function CreatePage() {
     <Card className="p-5">
       <CardTitle className="center" tag="h4">Заказчик</CardTitle>
       <Formik
-        initialValues={{
-          email: '',
-          name: '',
-          surname: '',
-          number: '',
-          positions: [''],
-          positionItem1: '',
-          costumerName: 'Барановская Е.В.',
-          id: `р-1${Date.now().toString().slice(7)}`,
-          costumer: 'Поставщик 1',
-          type: 'Розница',
-          date: '',
-          comment: '',
-        }}
+        initialValues={formValue}
         validateOnBlur
         validateonSubmit
         validationSchema={validationYup}
-        onSubmit={(data) => {
-          const positions = filter(data.positions, (e) => e.length > 0);
-          const allData = {
-            email: data.email,
-            fullName: `${data.name} ${data.surname}`,
-            number: data.number,
-            positions,
-            costumerName: data.costumerName,
-            costumer: data.costumer,
-            type: data.type,
-            date: data.date,
-            comment: data.comment,
-            status: 'New',
-            id: data.id,
-          };
-          globalDispatch(actionSendOrder(allData));
-        }}
+        onSubmit={onSubmitForm}
       >
         {({
           values, handleChange, handleReset,
@@ -195,7 +198,6 @@ function CreatePage() {
                               id={i}
                               placeholder="Шариковые ручки"
                               type="text"
-                              // onBlur={handleBlur}
                               invalid={i === 0 && touched.positionItem1 && !!errors.positionItem1}
                               onKeyPress={keyPressHandler}
                               onChange={handlePositions}
