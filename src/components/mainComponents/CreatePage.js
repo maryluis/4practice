@@ -74,203 +74,216 @@ function CreatePage() {
         }}
       >
         {({
-          values, handleChange, handleReset, handleSubmit, handleBlur, touched, errors,
-        }) => (
-          <Form onSubmit={handleSubmit}>
-            <FormGroup className="m-3">
-              <Label for="email" className="important">Email</Label>
-              <Col>
-                <Input
-                  id="email"
-                  name="email"
-                  placeholder="Ваш email"
-                  type="email"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  invalid={touched.email && !!errors.email}
-                  value={values.email}
-                />
-                <FormFeedback>
-                  {errors.email}
-                </FormFeedback>
-              </Col>
-            </FormGroup>
-            <FormGroup className="m-3">
-              <Label for="name" className="important">Имя</Label>
-              <Col>
-                <Input
-                  id="name"
-                  name="name"
-                  placeholder="Ваше имя"
-                  type="text"
-                  onChange={handleChange}
-                  value={values.name}
-                  onBlur={handleBlur}
-                  invalid={touched.name && !!errors.name}
-                />
-                <FormFeedback>
-                  {errors.name}
-                </FormFeedback>
-              </Col>
-            </FormGroup>
-            <FormGroup className="m-3">
-              <Label for="surname" className="important">Фамилия</Label>
-              <Col>
-                <Input
-                  id="surname"
-                  name="surname"
-                  placeholder="Ваша фамилия"
-                  type="text"
-                  onChange={handleChange}
-                  value={values.surname}
-                  onBlur={handleBlur}
-                  invalid={touched.surname && !!errors.surname}
-                />
-                <FormFeedback>
-                  {errors.surname}
-                </FormFeedback>
-              </Col>
-            </FormGroup>
-            <FormGroup className="m-3">
-              <Label for="phone" className="important">Телефон</Label>
-              <Col>
-                <Input
-                  id="number"
-                  name="number"
-                  placeholder="Ваш телефон"
-                  type="number"
-                  onBlur={handleBlur}
-                  invalid={touched.number && !!errors.number}
-                  onChange={handleChange}
-                  value={values.number}
-                />
-                <FormFeedback>
-                  {errors.number}
-                </FormFeedback>
-              </Col>
-            </FormGroup>
-            <CardTitle className="center" tag="h4">Заказ</CardTitle>
-            <FieldArray name="positions">
-              {(fieldArrayProps) => {
-                const { push, form } = fieldArrayProps;
-                const { positions } = form.values;
-                const keyPressHandler = (e) => {
-                  if (e.charCode === 13) {
-                    e.preventDefault();
-                    push('');
-                  }
-                };
-                const handleAddPosition = () => push('');
-                return (
-                  <div>
-                    {positions.map((_item, i) => (
-                      <FormGroup // eslint-disable-next-line react/no-array-index-key
-                        key={i}
-                        className="m-3"
-                      >
-                        <Label for="position" className={i ? '' : 'important'}>{`Позиция ${i + 1}`}</Label>
-                        <Col>
-                          <Input
-                            name={`positionItem${i + 1}`}
-                            autoFocus={!!i}
-                            id="position"
-                            placeholder="Шариковые ручки"
-                            type="text"
-                            onBlur={handleBlur}
-                            invalid={i === 0 && touched.positionItem1 && !!errors.positionItem1}
-                            onKeyPress={keyPressHandler}
-                            onChange={handleChange}
-                          />
-                          {i === 0 && (
-                          <FormFeedback>
-                            {errors.positionItem1}
-                          </FormFeedback>
-                          )}
-                        </Col>
-                      </FormGroup>
-                    ))}
-                    <Button className="buttonPosition" outline onClick={handleAddPosition}>Добавить позицию</Button>
-                  </div>
-                );
-              }}
-            </FieldArray>
-            <FormGroup className="m-3">
-              <Label for="costumer">Поставщик</Label>
-              <Col>
-                <Input
-                  id="costumer"
-                  name="costumer"
-                  type="select"
-                  onChange={handleChange}
-                >
-                  <option value="Поставщик 1">Поставщик 1</option>
-                  <option value="Поставщик 2">Поставщик 2</option>
-                </Input>
-              </Col>
-            </FormGroup>
-            <FormGroup className="m-3">
-              <Label for="type">Тип</Label>
-              <Col>
-                <Input
-                  id="type"
-                  name="type"
-                  onChange={handleChange}
-                  type="select"
-                >
-                  <option value="Розница">Розница</option>
-                  <option value="Опт">Опт</option>
-                </Input>
-              </Col>
-            </FormGroup>
-            <FormGroup className="m-3">
-              <Label for="ID">Ваш ID заказа</Label>
-              <Col>
-                <Input
-                  id="type"
-                  name="type"
-                  type="text"
-                  disabled
-                  value={values.id}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup className="m-3">
-              <Label className="important" for="date">Дата выполнения заказа</Label>
-              <Col>
-                <Input
-                  id="date"
-                  name="date"
-                  placeholder="Дата заказа"
-                  type="date"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  invalid={touched.date && !!errors.date}
-                  value={values.date}
-                />
-                <FormFeedback>
-                  {errors.date}
-                </FormFeedback>
-              </Col>
-            </FormGroup>
-            <FormGroup className="m-3">
-              <Label for="comment">Комментарий</Label>
-              <Col>
-                <Input
-                  id="comment"
-                  name="comment"
-                  placeholder="Ваш комментарий"
-                  type="textarea"
-                  onChange={handleChange}
-                  value={values.comment}
-                />
-              </Col>
-            </FormGroup>
-            <div className="formBottom">
-              <Button type="submit" className="m-2" color="primary">Отправить</Button>
-              <Button onClick={handleReset} className="m-2" outline>Сброс</Button>
-            </div>
-          </Form>
-        )}
+          values, handleChange, handleReset,
+          handleSubmit, setFieldValue, handleBlur, touched, errors,
+        }) => {
+          const handleChangeTypeAndId = (e) => {
+            handleChange(e);
+            let idType;
+            if (e.target.value === 'Розница') {
+              idType = 'р-';
+            } else {
+              idType = 'o-';
+            }
+            setFieldValue('id', `${idType + Date.now().toString().slice(7)}`);
+          };
+          return (
+            <Form onSubmit={handleSubmit}>
+              <FormGroup className="m-3">
+                <Label for="email" className="important">Email</Label>
+                <Col>
+                  <Input
+                    id="email"
+                    name="email"
+                    placeholder="Ваш email"
+                    type="email"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    invalid={touched.email && !!errors.email}
+                    value={values.email}
+                  />
+                  <FormFeedback>
+                    {errors.email}
+                  </FormFeedback>
+                </Col>
+              </FormGroup>
+              <FormGroup className="m-3">
+                <Label for="name" className="important">Имя</Label>
+                <Col>
+                  <Input
+                    id="name"
+                    name="name"
+                    placeholder="Ваше имя"
+                    type="text"
+                    onChange={handleChange}
+                    value={values.name}
+                    onBlur={handleBlur}
+                    invalid={touched.name && !!errors.name}
+                  />
+                  <FormFeedback>
+                    {errors.name}
+                  </FormFeedback>
+                </Col>
+              </FormGroup>
+              <FormGroup className="m-3">
+                <Label for="surname" className="important">Фамилия</Label>
+                <Col>
+                  <Input
+                    id="surname"
+                    name="surname"
+                    placeholder="Ваша фамилия"
+                    type="text"
+                    onChange={handleChange}
+                    value={values.surname}
+                    onBlur={handleBlur}
+                    invalid={touched.surname && !!errors.surname}
+                  />
+                  <FormFeedback>
+                    {errors.surname}
+                  </FormFeedback>
+                </Col>
+              </FormGroup>
+              <FormGroup className="m-3">
+                <Label for="phone" className="important">Телефон</Label>
+                <Col>
+                  <Input
+                    id="number"
+                    name="number"
+                    placeholder="Ваш телефон"
+                    type="number"
+                    onBlur={handleBlur}
+                    invalid={touched.number && !!errors.number}
+                    onChange={handleChange}
+                    value={values.number}
+                  />
+                  <FormFeedback>
+                    {errors.number}
+                  </FormFeedback>
+                </Col>
+              </FormGroup>
+              <CardTitle className="center" tag="h4">Заказ</CardTitle>
+              <FieldArray name="positions">
+                {(fieldArrayProps) => {
+                  const { push, form } = fieldArrayProps;
+                  const { positions } = form.values;
+                  const keyPressHandler = (e) => {
+                    if (e.charCode === 13) {
+                      e.preventDefault();
+                      push('');
+                    }
+                  };
+                  const handleAddPosition = () => push('');
+                  return (
+                    <div>
+                      {positions.map((_item, i) => (
+                        <FormGroup // eslint-disable-next-line react/no-array-index-key
+                          key={i}
+                          className="m-3"
+                        >
+                          <Label for="position" className={i ? '' : 'important'}>{`Позиция ${i + 1}`}</Label>
+                          <Col>
+                            <Input
+                              name={`positionItem${i + 1}`}
+                              autoFocus={!!i}
+                              id="position"
+                              placeholder="Шариковые ручки"
+                              type="text"
+                              onBlur={handleBlur}
+                              invalid={i === 0 && touched.positionItem1 && !!errors.positionItem1}
+                              onKeyPress={keyPressHandler}
+                              onChange={handleChange}
+                            />
+                            {i === 0 && (
+                            <FormFeedback>
+                              {errors.positionItem1}
+                            </FormFeedback>
+                            )}
+                          </Col>
+                        </FormGroup>
+                      ))}
+                      <Button className="buttonPosition" outline onClick={handleAddPosition}>Добавить позицию</Button>
+                    </div>
+                  );
+                }}
+              </FieldArray>
+              <FormGroup className="m-3">
+                <Label for="costumer">Поставщик</Label>
+                <Col>
+                  <Input
+                    id="costumer"
+                    name="costumer"
+                    type="select"
+                    onChange={handleChange}
+                  >
+                    <option value="Поставщик 1">Поставщик 1</option>
+                    <option value="Поставщик 2">Поставщик 2</option>
+                  </Input>
+                </Col>
+              </FormGroup>
+              <FormGroup className="m-3">
+                <Label for="type">Тип</Label>
+                <Col>
+                  <Input
+                    id="type"
+                    name="type"
+                    onChange={handleChangeTypeAndId}
+                    type="select"
+                  >
+                    <option value="Розница">Розница</option>
+                    <option value="Опт">Опт</option>
+                  </Input>
+                </Col>
+              </FormGroup>
+              <FormGroup className="m-3">
+                <Label for="ID">Ваш ID заказа</Label>
+                <Col>
+                  <Input
+                    id="type"
+                    name="type"
+                    type="text"
+                    disabled
+                    value={values.id}
+                  />
+                </Col>
+              </FormGroup>
+              <FormGroup className="m-3">
+                <Label className="important" for="date">Дата выполнения заказа</Label>
+                <Col>
+                  <Input
+                    id="date"
+                    name="date"
+                    placeholder="Дата заказа"
+                    type="date"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    invalid={touched.date && !!errors.date}
+                    value={values.date}
+                  />
+                  <FormFeedback>
+                    {errors.date}
+                  </FormFeedback>
+                </Col>
+              </FormGroup>
+              <FormGroup className="m-3">
+                <Label for="comment">Комментарий</Label>
+                <Col>
+                  <Input
+                    id="comment"
+                    name="comment"
+                    placeholder="Ваш комментарий"
+                    type="textarea"
+                    onChange={handleChange}
+                    value={values.comment}
+                  />
+                </Col>
+              </FormGroup>
+              <div className="formBottom">
+                <Button type="submit" className="m-2" color="primary">Отправить</Button>
+                <Button onClick={handleReset} className="m-2" outline>Сброс</Button>
+              </div>
+            </Form>
+          );
+        }}
 
       </Formik>
     </Card>
