@@ -45,6 +45,7 @@ function CreatePage() {
           surname: '',
           number: '',
           positions: [''],
+          positionItem1: '',
           costumerName: 'Барановская Е.В.',
           id: `р-1${Date.now().toString().slice(7)}`,
           costumer: 'Поставщик 1',
@@ -53,6 +54,7 @@ function CreatePage() {
           comment: '',
         }}
         validateOnBlur
+        validateonSubmit
         validationSchema={validationYup}
         onSubmit={(data) => {
           const positions = filter(data.positions, (e) => e.length > 0);
@@ -193,7 +195,7 @@ function CreatePage() {
                               id={i}
                               placeholder="Шариковые ручки"
                               type="text"
-                              onBlur={handleBlur}
+                              // onBlur={handleBlur}
                               invalid={i === 0 && touched.positionItem1 && !!errors.positionItem1}
                               onKeyPress={keyPressHandler}
                               onChange={handlePositions}
